@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "algorithmsInCsharp": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}
