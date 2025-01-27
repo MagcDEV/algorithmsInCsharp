@@ -12,6 +12,7 @@ public class PrefixSum
     // 128. Longest Consecutive Sequence
     // 525. Contiguous Array
     // 560. Subarray Sum Equals K
+    // 974. Subarray Sums Divisible by K
     // 303. Range Sum Query - Immutable
 
     /*
@@ -185,4 +186,88 @@ public class PrefixSum
 
     }
 
+    /*
+    // 974. Subarray Sums Divisible by K
+    Given an integer array nums and an integer k, 
+    return the number of non-empty subarrays that have a sum divisible by k.
+
+    A subarray is a contiguous part of an array.
+    Input: nums = [4,5,0,-2,-3,1], k = 5
+    Output: 7
+    Explanation: There are 7 subarrays with a sum divisible by k = 5:
+    [4, 5, 0, -2, -3, 1], [5], [5, 0], [5, 0, -2, -3], [0], [0, -2, -3], [-2, -3]
+    Example 2:
+
+    Input: nums = [5], k = 9
+    Output: 0
+     */
+
+    public int SubarraysDivByK(int[] nums, int k)
+    {
+        int prefixSum = 0;
+        int counter = 0;
+        Dictionary<int, int> dic = new();
+        dic[0] = 1;
+
+        for (int i = 0; i < nums.Length; i++)
+        {
+            prefixSum += nums[i];
+            int remainder = prefixSum % k;
+
+            if (remainder < 0)
+            {
+                remainder += k;
+            }
+
+            if (dic.ContainsKey(remainder))
+            {
+                counter += dic[remainder];
+                dic[remainder]++;
+            }
+            else
+            {
+                dic[remainder] = 1;
+            }
+        }
+
+        return counter;
+
+    }
+
+    /*
+    //  303. Range Sum Query - Immutable
+    Given an integer array nums, handle multiple queries of the following type:
+
+    Calculate the sum of the elements of nums between indices left and right inclusive where left <= right.
+    Implement the NumArray class:
+
+    NumArray(int[] nums) Initializes the object with the integer array nums.
+    int sumRange(int left, int right) Returns the sum of the elements of nums between 
+    indices left and right inclusive (i.e. nums[left] + nums[left + 1] + ... + nums[right]).
+    */
+    public class NumArray
+    {
+        private int[] prefixSum;
+
+        public NumArray(int[] nums)
+        {
+            int sum = 0;
+            prefixSum = new int[nums.Length];
+            for (int i = 0; i < nums.Length; i++)
+            {
+                sum += nums[i];
+                prefixSum[i] = sum;
+            }
+
+        }
+
+        public int SumRange(int left, int right)
+        {
+            if (left == 0) return prefixSum[right];
+            return prefixSum[right] - prefixSum[left - 1];
+
+        }
+    }
+
 }
+
